@@ -86,11 +86,12 @@ CREATE TABLE OrderDetails (
 
 DELIMITER $$
 
-CREATE TRIGGER TrgUpdateOrderTotal
+-- Trigger to update TotalAmount after an INSERT or UPDATE in OrderDetails
+CREATE TRIGGER UpdateOrderTotal
 AFTER INSERT ON OrderDetails
 FOR EACH ROW
 BEGIN
-	-- Calculate the total amount for the specific OrderID
+    -- Calculate the total amount for the specific OrderID
     UPDATE Orders
     SET TotalAmount = (
         SELECT SUM(od.Quantity * od.Price)
