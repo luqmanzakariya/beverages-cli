@@ -2,11 +2,15 @@ package submenu1
 
 import (
 	"beverages-cli/handler"
+	"bufio"
 	"fmt"
 	"log"
+	"os"
 )
 
 func AddCustomer() {
+	reader := bufio.NewReader(os.Stdin)
+
 	// # UI and Store Input
 	fmt.Print("\033[H\033[2J")
 	fmt.Println("=======================================")
@@ -15,36 +19,31 @@ func AddCustomer() {
 	fmt.Println("")
 
 	fmt.Print("Input Username: ")
-	var Username string
-	_, err := fmt.Scan(&Username)
+	Username, err := reader.ReadString('\n')
 	if err != nil {
 		log.Fatal("Failed to read userInput")
 	}
 
 	fmt.Print("Input Name: ")
-	var Name string
-	_, err = fmt.Scan(&Name)
+	Name, err := reader.ReadString('\n')
 	if err != nil {
 		log.Fatal("Failed to read userInput")
 	}
 
 	fmt.Print("Input Email: ")
-	var Email string
-	_, err = fmt.Scan(&Email)
+	Email, err := reader.ReadString('\n')
 	if err != nil {
 		log.Fatal("Failed to read userInput")
 	}
 
 	fmt.Print("Input Phone: ")
-	var PhoneNumber string
-	_, err = fmt.Scan(&PhoneNumber)
+	PhoneNumber, err := reader.ReadString('\n')
 	if err != nil {
 		log.Fatal("Failed to read userInput")
 	}
 
 	fmt.Print("Input Address: ")
-	var Address string
-	_, err = fmt.Scan(&Address)
+	Address, err := reader.ReadString('\n')
 	if err != nil {
 		log.Fatal("Failed to read userInput")
 	}
