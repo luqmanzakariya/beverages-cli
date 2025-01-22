@@ -2,17 +2,24 @@ package views
 
 import (
 	config "beverages-cli/config"
+	"beverages-cli/entity"
+	"beverages-cli/handler"
+	subMenu1 "beverages-cli/views/submenu1"
 	"fmt"
 	"log"
 )
 
 func View1() {
-	// Init and close db after function ends
+	// # Init and close db after function ends
 	db, err := config.InitDB()
 	if err != nil {
 		log.Fatal("Failed to connect db", err.Error())
 	}
 	defer db.Close()
+
+	// # Flag to check login or not
+	var loggedIn bool = false
+	var adminDetail entity.Users
 
 	for {
 		// # User interface
@@ -20,7 +27,7 @@ func View1() {
 		fmt.Println("=======================================")
 		fmt.Println("Admin")
 		fmt.Println("=======================================")
-		fmt.Println("*input 0 to username and 0 to exit")
+		fmt.Println("Please login as admin first")
 		fmt.Println("")
 
 		// # Waiting input username
@@ -39,9 +46,49 @@ func View1() {
 			log.Fatal("Failed to read password")
 		}
 
+		// # Fetching data from database
+		users, err := handler.GetUsersById(db, username, password)
+		if err != nil {
+			log.Fatal("Failed to retrieve data from database: ", err)
+		}
+
+		// # Check if password is correct and RoleID is 1 (admin)
+		if len(users) == 1 {
+			if users[0].Password == password && users[0].RoleID == 1 {
+				loggedIn = true
+				adminDetail = users[0]
+			} else {
+				fmt.Println("")
+				fmt.Println("Wrong password!")
+			}
+		} else {
+			fmt.Println("")
+			fmt.Println("User not found")
+		}
+
+		// # Break the loop if successfully login
+		if loggedIn {
+			break
+		} else {
+			fmt.Print("Continue? (press 'n' to exit) ")
+		}
+
+		// # Input to retry or exit
+		var actionInput string
+		_, err = fmt.Scan(&actionInput)
+		if err != nil {
+			log.Fatal("Failed to read password")
+		}
+
 		// # Exit condition
-		if username == "0" && password == "0" {
+		if actionInput == "n" {
 			break
 		}
+	}
+
+	// # Show admin menu if successfully logged in
+	if loggedIn {
+		// # Sub Menu Admin
+		subMenu1.SubMenuAdmin(adminDetail)
 	}
 }
