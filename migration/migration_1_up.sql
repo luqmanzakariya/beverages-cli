@@ -74,6 +74,12 @@ CREATE TABLE Orders (
     FOREIGN KEY (UserID) REFERENCES Users(UserID)
 );
 
+INSERT INTO Orders (UserID, OrderDate, TotalAmount) VALUES
+(2, '2025-01-28', 0),
+(2, '2025-01-27', 0),
+(2, '2025-01-26', 0),
+(5, '2025-01-28', 0);
+
 CREATE TABLE OrderDetails (
     OrderDetailID INT AUTO_INCREMENT PRIMARY KEY,
     OrderID INT,
@@ -83,3 +89,10 @@ CREATE TABLE OrderDetails (
     FOREIGN KEY (OrderID) REFERENCES Orders(OrderID),
     FOREIGN KEY (ProductID) REFERENCES Products(ProductID)
 );
+
+INSERT INTO OrderDetails (OrderID, ProductID, Quantity, Price) VALUES
+(1, 1, 2, 100000),
+(1, 5, 3, 45000),
+(2, 2, 1, 1000000),
+(3, 3, 3, 2100000),
+(4, 5, 3, 45000);
