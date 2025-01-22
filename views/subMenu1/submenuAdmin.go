@@ -43,7 +43,7 @@ func SubMenuAdmin(admin entity.Users) {
 		// # Render the response and table
 		table.Render()
 
-		// # UI Above Table
+		// # UI Below Table
 		fmt.Println("")
 		fmt.Println("1. Register Customer")
 		fmt.Println("2. Delete Customer")

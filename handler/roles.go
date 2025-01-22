@@ -32,4 +32,3 @@ func GetAllRoles(db *sql.DB) ([]entity.Roles, error) {
 
 	return roles, nil
 }
-

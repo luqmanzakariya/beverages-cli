@@ -1,19 +1,11 @@
 package views
 
 import (
-	config "beverages-cli/config"
 	"fmt"
 	"log"
 )
 
-func View4() { 
-	// Init and close db after function ends
-	db, err := config.InitDB()
-	if err != nil {
-		log.Fatal("Failed to connect db", err.Error())
-	}
-	defer db.Close()
-
+func View4() {
 	for {
 		// # User interface
 		fmt.Print("\033[H\033[2J")
