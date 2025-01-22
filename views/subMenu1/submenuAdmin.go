@@ -1,7 +1,6 @@
-package subMenu1
+package submenu1
 
 import (
-	config "beverages-cli/config"
 	"beverages-cli/entity"
 	"beverages-cli/handler"
 	"fmt"
@@ -13,13 +12,6 @@ import (
 )
 
 func SubMenuAdmin(admin entity.Users) {
-	// Init and close db after function ends
-	db, err := config.InitDB()
-	if err != nil {
-		log.Fatal("Failed to connect db", err.Error())
-	}
-	defer db.Close()
-
 	for {
 		// # User interface
 		fmt.Print("\033[H\033[2J")
@@ -29,7 +21,7 @@ func SubMenuAdmin(admin entity.Users) {
 		fmt.Println("")
 
 		// # Fetch data customers
-		customers, err := handler.GetAllCustomers(db)
+		customers, err := handler.GetAllCustomers()
 		if err != nil {
 			log.Fatal("Failed to retrieve data from database: ", err)
 		}
@@ -66,7 +58,17 @@ func SubMenuAdmin(admin entity.Users) {
 			log.Fatal("Failed to read userInput")
 		}
 
-		fmt.Println(userInput)
+		// # Submenu View
+		switch userInput {
+		case "1":
+			AddCustomer()
+		case "2":
+			DeleteCustomer()
+		case "3":
+		case "4":
+		default:
+			continue
+		}
 
 		// # Exit condition
 		if userInput == "4" {

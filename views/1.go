@@ -1,7 +1,6 @@
 package views
 
 import (
-	config "beverages-cli/config"
 	"beverages-cli/entity"
 	"beverages-cli/handler"
 	subMenu1 "beverages-cli/views/submenu1"
@@ -10,13 +9,6 @@ import (
 )
 
 func View1() {
-	// # Init and close db after function ends
-	db, err := config.InitDB()
-	if err != nil {
-		log.Fatal("Failed to connect db", err.Error())
-	}
-	defer db.Close()
-
 	// # Flag to check login or not
 	var loggedIn bool = false
 	var adminDetail entity.Users
@@ -47,14 +39,14 @@ func View1() {
 		}
 
 		// # Fetching data from database
-		users, err := handler.GetUsersById(db, username, password)
+		users, err := handler.GetUsersById(username, password)
 		if err != nil {
 			log.Fatal("Failed to retrieve data from database: ", err)
 		}
 
 		// # Check if password is correct and RoleID is 1 (admin)
-		if len(users) == 1 {
-			if users[0].Password == password && users[0].RoleID == 1 {
+		if len(users) == 1 && users[0].Password.Valid {
+			if users[0].Password.String == password && users[0].RoleID == 1 {
 				loggedIn = true
 				adminDetail = users[0]
 			} else {

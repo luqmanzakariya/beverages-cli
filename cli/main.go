@@ -24,6 +24,7 @@ func main() {
 			log.Fatal("Failed to read name input")
 		}
 
+		// # Main View
 		switch input {
 		case "1":
 			views.View1()
