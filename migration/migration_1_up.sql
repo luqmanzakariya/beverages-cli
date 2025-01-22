@@ -74,12 +74,6 @@ CREATE TABLE Orders (
     FOREIGN KEY (UserID) REFERENCES Users(UserID)
 );
 
-INSERT INTO Orders (UserID, OrderDate, TotalAmount) VALUES
-(2, '2025-01-28', 0),
-(2, '2025-01-27', 0),
-(2, '2025-01-26', 0),
-(5, '2025-01-28', 0);
-
 CREATE TABLE OrderDetails (
     OrderDetailID INT AUTO_INCREMENT PRIMARY KEY,
     OrderID INT,
@@ -89,6 +83,66 @@ CREATE TABLE OrderDetails (
     FOREIGN KEY (OrderID) REFERENCES Orders(OrderID),
     FOREIGN KEY (ProductID) REFERENCES Products(ProductID)
 );
+
+DELIMITER $$
+
+CREATE TRIGGER TrgUpdateOrderTotal
+AFTER INSERT ON OrderDetails
+FOR EACH ROW
+BEGIN
+	-- Calculate the total amount for the specific OrderID
+    UPDATE Orders
+    SET TotalAmount = (
+        SELECT SUM(od.Quantity * od.Price)
+        FROM OrderDetails od
+        WHERE od.OrderID = NEW.OrderID
+    )
+    WHERE Orders.OrderID = NEW.OrderID;
+END $$
+
+DELIMITER ;
+
+-- After UPDATE: Create a similar trigger to handle updates to the OrderDetails table:
+DELIMITER $$
+
+CREATE TRIGGER UpdateOrderTotalOnUpdate
+AFTER UPDATE ON OrderDetails
+FOR EACH ROW
+BEGIN
+    UPDATE Orders
+    SET TotalAmount = (
+        SELECT SUM(Price * Quantity)
+        FROM OrderDetails
+        WHERE OrderID = NEW.OrderID
+    )
+    WHERE OrderID = NEW.OrderID;
+END $$
+
+DELIMITER ;
+
+-- After DELETE: Create another trigger to handle deletions:
+DELIMITER $$
+
+CREATE TRIGGER UpdateOrderTotalOnDelete
+AFTER DELETE ON OrderDetails
+FOR EACH ROW
+BEGIN
+    UPDATE Orders
+    SET TotalAmount = (
+        SELECT SUM(Price * Quantity)
+        FROM OrderDetails
+        WHERE OrderID = OLD.OrderID
+    )
+    WHERE OrderID = OLD.OrderID;
+END $$
+
+DELIMITER ;
+
+INSERT INTO Orders (UserID, OrderDate, TotalAmount) VALUES
+(2, '2025-01-28', 0),
+(2, '2025-01-27', 0),
+(2, '2025-01-26', 0),
+(5, '2025-01-28', 0);
 
 INSERT INTO OrderDetails (OrderID, ProductID, Quantity, Price) VALUES
 (1, 1, 2, 100000),
