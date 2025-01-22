@@ -6,17 +6,25 @@ import (
 	"log"
 )
 
-func AddCustomer() {
+func EditCustomer() {
+	// # Store Input
+	fmt.Print("Select id customer you want to edit: ")
+	var UserId string
+	_, err := fmt.Scan(&UserId)
+	if err != nil {
+		log.Fatal("Failed to read userInput")
+	}
+
 	// # UI and Store Input
 	fmt.Print("\033[H\033[2J")
 	fmt.Println("=======================================")
-	fmt.Println("Register New Customer")
+	fmt.Println("Edit Customer")
 	fmt.Println("=======================================")
 	fmt.Println("")
 
 	fmt.Print("Input Username: ")
 	var Username string
-	_, err := fmt.Scan(&Username)
+	_, err = fmt.Scan(&Username)
 	if err != nil {
 		log.Fatal("Failed to read userInput")
 	}
@@ -50,13 +58,13 @@ func AddCustomer() {
 	}
 
 	// # Create Customer
-	customers, err := handler.CreateCustomer(Username, Name, Email, PhoneNumber, Address)
+	customers, err := handler.EditCustomer(UserId, Username, Name, Email, PhoneNumber, Address)
 	if err != nil {
 		log.Fatal("Failed to read userInput")
 	}
 	if customers {
 		fmt.Println("")
-		fmt.Println("Customer successfully created!")
+		fmt.Println("Customer successfully editted!")
 	} else {
 		fmt.Println("Error create customer")
 	}

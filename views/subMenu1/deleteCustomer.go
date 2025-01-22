@@ -19,7 +19,8 @@ func DeleteCustomer() {
 		log.Fatal("Failed delete customer by ID")
 	}
 	if successDelete {
-		fmt.Println("Customer successfully deleted")
+		fmt.Println("")
+		fmt.Println("Customer successfully deleted!")
 	} else {
 		fmt.Println("Error delete customer")
 	}

@@ -135,3 +135,30 @@ func DeleteCustomerById(UserID string) (bool, error) {
 
 	return true, nil
 }
+
+func EditCustomer(UserId string, Username string, Name string, Email string, PhoneNumber string, Address string) (bool, error) {
+	db, err := config.InitDB()
+	if err != nil {
+		log.Fatal("Failed to connect db", err.Error())
+	}
+	defer db.Close()
+
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+
+	// # Query with parameters
+	query := `
+		UPDATE Users
+		SET Username  = ?, Name = ?, Email = ?, PhoneNumber = ?, Address = ?
+		WHERE UserID  = ?;
+	`
+
+	rows, err := db.QueryContext(ctx, query, Username, Name, Email, PhoneNumber, Address, UserId)
+
+	if err != nil {
+		return false, err
+	}
+	defer rows.Close()
+
+	return true, nil
+}

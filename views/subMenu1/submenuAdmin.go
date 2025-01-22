@@ -28,14 +28,17 @@ func SubMenuAdmin(admin entity.Users) {
 
 		// # Create a new table writer
 		table := tablewriter.NewWriter(os.Stdout)
-		table.SetHeader([]string{"ID", "NAME", "PHONE"}) // Table headers
+		table.SetHeader([]string{"ID", "USERNAME", "NAME", "EMAIL", "PHONE", "ADDRESS"}) // Table headers
 
 		// # Add rows to the table
 		for _, value := range customers {
 			row := []string{
 				strconv.Itoa(value.UserID),
+				value.Username,
 				value.Name,
+				value.Email,
 				value.PhoneNumber,
+				value.Address,
 			}
 			table.Append(row)
 		}
@@ -65,6 +68,7 @@ func SubMenuAdmin(admin entity.Users) {
 		case "2":
 			DeleteCustomer()
 		case "3":
+			EditCustomer()
 		case "4":
 		default:
 			continue
