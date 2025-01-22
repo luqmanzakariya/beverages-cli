@@ -25,7 +25,8 @@ INSERT INTO Users (Username, Password, Name, Email, PhoneNumber, Address, RoleID
 ('admin', 'admin', 'Admin 1', 'admin@mail.com', '081234567890', 'alamat admin 1', 1),
 ('customer1', 'password', 'Customer 1', 'customer1@mail.com', '082211111111', 'alamat customer 1', 2),
 ('supplier1', 'password', 'Supplier 1', 'supplier1@mail.com', '083311111111', 'alamat supplier 1', 3),
-('owner1', 'password', 'Owner 1', 'owner1@mail.com', '084411111111', 'alamat owner 1', 3);
+('owner1', 'password', 'Owner 1', 'owner1@mail.com', '084411111111', 'alamat owner 1', 4),
+('customer2', 'password', 'Customer 2', 'customer2@mail.com', '082222222222', 'alamat customer 2', 2);
 
 CREATE TABLE Categories (
     CategoryID INT AUTO_INCREMENT PRIMARY KEY,
