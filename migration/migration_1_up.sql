@@ -49,6 +49,23 @@ CREATE TABLE Products (
     FOREIGN KEY (CategoryID) REFERENCES Categories(CategoryID)
 );
 
+INSERT INTO Products (ProductName, Price, StockQuantity, CategoryID) VALUES
+('Beer', 50000, 50, 1),
+('Wine', 1000000, 10, 1),
+('Vodka', 700000, 30, 1),
+('Apple Juice', 15000, 100, 2),
+('Orange Juie', 12000, 90, 2),
+('Banana Juie', 11000, 95, 2),
+('Skimmed Milk', 25000, 45, 3),
+('Low Fat Milk', 20000, 50, 3),
+('Full Cream Milk', 15000, 55, 3),
+('Green Tea', 10000, 75, 4),
+('Black Tea', 12000, 80, 4),
+('Oolong Tea', 17000, 50, 4),
+('Cappucino', 23000, 20, 5),
+('Latte', 32000, 25, 5),
+('Americano', 25000, 30, 5);
+
 CREATE TABLE Orders (
     OrderID INT AUTO_INCREMENT PRIMARY KEY,
     UserID INT,
