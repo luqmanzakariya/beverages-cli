@@ -107,11 +107,11 @@ END;
 DELIMITER ;
 
 
-INSERT INTO Orders (UserID, OrderDate) VALUES
-(2, '2025-01-28'),
-(2, '2025-01-27'),
-(2, '2025-01-26'),
-(5, '2025-01-28');
+INSERT INTO Orders (UserID, OrderDate, TotalAmount, Status) VALUES
+(2, '2025-01-28', 136000, 'PAID'),
+(2, '2025-01-27', 1000000, 'PAID'),
+(2, '2025-01-26', 2100000, 'PAID'),
+(5, '2025-01-28', 36000, 'PAID');
 
 INSERT INTO OrderDetails (OrderID, ProductID, Quantity) VALUES
 (1, 1, 2),
