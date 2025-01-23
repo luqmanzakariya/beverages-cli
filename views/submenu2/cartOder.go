@@ -69,6 +69,50 @@ func CartOrder(OrderID int, orderDate string, customer entity.Users) {
 		case "1":
 			AddItemsToCart(OrderID, orderDate, customer)
 		case "2":
+			if len(carts) == 0 {
+				fmt.Println("You don't have any order on the list")
+			} else {
+				fmt.Println("")
+				fmt.Print("Please select order detail ID you want to delete? ")
+
+				var orderDetailID string
+				_, err = fmt.Scan(&orderDetailID)
+				if err != nil {
+					log.Fatal("Failed to read userInput")
+				}
+
+				var foundOrderDetailID bool = false
+				for _, value := range carts {
+					if strconv.Itoa(int(value.ID.Int64)) == orderDetailID {
+						foundOrderDetailID = true
+					}
+				}
+
+				if foundOrderDetailID {
+					successDelete, err := handler.DeleteOrderDetailByID(orderDetailID)
+					if err != nil {
+						log.Fatal("Failed delete customer by ID")
+					}
+
+					if successDelete {
+						fmt.Println("")
+						fmt.Printf("Order detail with ID %s successfully deleted\n", orderDetailID)
+					} else {
+						fmt.Println("")
+						fmt.Println("Error delete from database")
+					}
+
+				} else {
+					fmt.Println("")
+					fmt.Println("Oops, We dont find this order detail id in your cart")
+				}
+			}
+
+			var userInputToContinue string
+			_, err = fmt.Scan(&userInputToContinue)
+			if err != nil {
+				log.Fatal("Failed to read userInput")
+			}
 
 		case "3":
 

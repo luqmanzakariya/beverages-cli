@@ -56,7 +56,7 @@ func GetListCart(OrderID int) ([]entity.Cart, error) {
 	// # Query with parameters
 	query := `
 		SELECT
-			p.ProductID AS ID,
+			od.OrderDetailID  AS ID,
 			p.ProductName AS ProductName,
 			od.Quantity AS Quantity,
 			p.Price AS Price,
