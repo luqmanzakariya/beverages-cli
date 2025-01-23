@@ -8,6 +8,33 @@ import (
 	"time"
 )
 
+func PaidOrder(OrderID int, grandTotal float32) (bool, error) {
+	db, err := config.InitDB()
+	if err != nil {
+		log.Fatal("Failed to connect db", err.Error())
+	}
+	defer db.Close()
+
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+
+	// # Query with parameters
+	query := `
+		UPDATE Orders
+		SET Status = 'PAID', TotalAmount = ?
+		WHERE OrderID = ?;
+	`
+
+	rows, err := db.QueryContext(ctx, query, grandTotal, OrderID)
+
+	if err != nil {
+		return false, err
+	}
+	defer rows.Close()
+
+	return true, nil
+}
+
 func CreateOrder(UserID string) (int, string, error) {
 	db, err := config.InitDB()
 	if err != nil {
