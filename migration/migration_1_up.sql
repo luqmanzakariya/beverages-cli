@@ -85,60 +85,27 @@ CREATE TABLE OrderDetails (
     FOREIGN KEY (ProductID) REFERENCES Products(ProductID)
 );
 
-DELIMITER $$
+DELIMITER //
 
--- Trigger to update TotalAmount after an INSERT or UPDATE in OrderDetails
-CREATE TRIGGER UpdateOrderTotal
-AFTER INSERT ON OrderDetails
+CREATE TRIGGER CalculateOrderDetailsPrice
+BEFORE INSERT ON OrderDetails
 FOR EACH ROW
 BEGIN
-    -- Calculate the total amount for the specific OrderID
-    UPDATE Orders
-    SET TotalAmount = (
-        SELECT SUM(od.Quantity * od.Price)
-        FROM OrderDetails od
-        WHERE od.OrderID = NEW.OrderID
-    )
-    WHERE Orders.OrderID = NEW.OrderID;
-END $$
+    DECLARE product_price DECIMAL(10,2);
+
+    -- Fetch the price of the product from the Products table
+    SELECT Price INTO product_price
+    FROM Products
+    WHERE ProductID = NEW.ProductID;
+
+    -- Calculate the total price and assign it to the NEW.Price column
+    SET NEW.Price = product_price * NEW.Quantity;
+END;
+
+//
 
 DELIMITER ;
 
--- After UPDATE: Create a similar trigger to handle updates to the OrderDetails table:
-DELIMITER $$
-
-CREATE TRIGGER UpdateOrderTotalOnUpdate
-AFTER UPDATE ON OrderDetails
-FOR EACH ROW
-BEGIN
-    UPDATE Orders
-    SET TotalAmount = (
-        SELECT SUM(Price * Quantity)
-        FROM OrderDetails
-        WHERE OrderID = NEW.OrderID
-    )
-    WHERE OrderID = NEW.OrderID;
-END $$
-
-DELIMITER ;
-
--- After DELETE: Create another trigger to handle deletions:
-DELIMITER $$
-
-CREATE TRIGGER UpdateOrderTotalOnDelete
-AFTER DELETE ON OrderDetails
-FOR EACH ROW
-BEGIN
-    UPDATE Orders
-    SET TotalAmount = (
-        SELECT SUM(Price * Quantity)
-        FROM OrderDetails
-        WHERE OrderID = OLD.OrderID
-    )
-    WHERE OrderID = OLD.OrderID;
-END $$
-
-DELIMITER ;
 
 INSERT INTO Orders (UserID, OrderDate) VALUES
 (2, '2025-01-28'),
@@ -146,9 +113,9 @@ INSERT INTO Orders (UserID, OrderDate) VALUES
 (2, '2025-01-26'),
 (5, '2025-01-28');
 
-INSERT INTO OrderDetails (OrderID, ProductID, Quantity, Price) VALUES
-(1, 1, 2, 100000),
-(1, 5, 3, 45000),
-(2, 2, 1, 1000000),
-(3, 3, 3, 2100000),
-(4, 5, 3, 45000);
+INSERT INTO OrderDetails (OrderID, ProductID, Quantity) VALUES
+(1, 1, 2),
+(1, 5, 3),
+(2, 2, 1),
+(3, 3, 3),
+(4, 5, 3);
