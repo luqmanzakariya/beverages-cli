@@ -66,9 +66,9 @@ func SubMenuAdmin(admin entity.Users) {
 		case "1":
 			AddCustomer()
 		case "2":
-			DeleteCustomer()
+			DeleteCustomer(customers)
 		case "3":
-			EditCustomer()
+			EditCustomer(customers)
 		case "4":
 		default:
 			continue
