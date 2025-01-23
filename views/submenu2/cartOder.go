@@ -12,6 +12,8 @@ import (
 
 func CartOrder(OrderID int, orderDate string, customer entity.Users) {
 	for {
+		// # Initiate total variable
+		var grandTotal float32 = 0
 		// # User interface
 		fmt.Print("\033[H\033[2J")
 		fmt.Println("=======================================")
@@ -32,18 +34,20 @@ func CartOrder(OrderID int, orderDate string, customer entity.Users) {
 
 		// # Add rows to the table
 		for _, value := range carts {
+			grandTotal += float32(value.Total.Float64)
 			row := []string{
 				strconv.Itoa(int(value.ID.Int64)),
 				value.ProductName.String,
 				strconv.Itoa(int(value.Quantity.Int64)),
-				fmt.Sprintf("%f", value.Price.Float64),
-				fmt.Sprintf("%f", value.Total.Float64),
+				fmt.Sprintf("%.2f", value.Price.Float64),
+				fmt.Sprintf("%.2f", value.Total.Float64),
 			}
 			table.Append(row)
 		}
 
 		// # Render the response and table
 		table.Render()
+		fmt.Println("TOTAL: ", grandTotal)
 
 		// # UI Below Table
 		fmt.Println("")

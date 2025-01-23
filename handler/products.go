@@ -45,3 +45,28 @@ func GetListProducts() ([]entity.Products, error) {
 
 	return products, nil
 }
+
+func InsertProducts(OrderID int, productID string, quantity string) (bool, error) {
+	db, err := config.InitDB()
+	if err != nil {
+		log.Fatal("Failed to connect db", err.Error())
+	}
+	defer db.Close()
+
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+
+	// # Query with parameters
+	query := `
+		INSERT INTO OrderDetails (OrderID, ProductID, Quantity) VALUES
+		(?, ?, ?);
+	`
+
+	rows, err := db.QueryContext(ctx, query, OrderID, productID, quantity)
+	if err != nil {
+		return false, err
+	}
+	defer rows.Close()
+
+	return true, nil
+}
