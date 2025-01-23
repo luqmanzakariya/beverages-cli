@@ -70,7 +70,8 @@ CREATE TABLE Orders (
     OrderID INT AUTO_INCREMENT PRIMARY KEY,
     UserID INT,
     OrderDate Date,
-    TotalAmount Decimal(10,2),
+    TotalAmount Decimal(10,2) DEFAULT 0,
+    Status ENUM('PAID', 'UNPAID') DEFAULT 'UNPAID',
     FOREIGN KEY (UserID) REFERENCES Users(UserID)
 );
 
@@ -139,11 +140,11 @@ END $$
 
 DELIMITER ;
 
-INSERT INTO Orders (UserID, OrderDate, TotalAmount) VALUES
-(2, '2025-01-28', 0),
-(2, '2025-01-27', 0),
-(2, '2025-01-26', 0),
-(5, '2025-01-28', 0);
+INSERT INTO Orders (UserID, OrderDate) VALUES
+(2, '2025-01-28'),
+(2, '2025-01-27'),
+(2, '2025-01-26'),
+(5, '2025-01-28');
 
 INSERT INTO OrderDetails (OrderID, ProductID, Quantity, Price) VALUES
 (1, 1, 2, 100000),

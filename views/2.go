@@ -1,7 +1,9 @@
 package views
 
 import (
+	"beverages-cli/entity"
 	"beverages-cli/handler"
+	"beverages-cli/views/submenu2"
 	"fmt"
 	"log"
 	"os"
@@ -17,7 +19,6 @@ func View2() {
 		fmt.Println("=======================================")
 		fmt.Println("Order")
 		fmt.Println("=======================================")
-		fmt.Println("")
 
 		// # Fetch data customers
 		customers, err := handler.GetAllCustomers()
@@ -54,9 +55,43 @@ func View2() {
 			log.Fatal("Failed to read customerId")
 		}
 
+		var foundIdCustomers bool = false
+		var selectedCustomers entity.Users
+		for _, value := range customers {
+			if strconv.Itoa(value.UserID) == customerId {
+				foundIdCustomers = true
+				selectedCustomers = value
+			}
+		}
+
 		// # Exit condition
 		if customerId == "0" {
 			break
+		} else {
+			// # Go to sub menu if customers found
+			if foundIdCustomers {
+				orderId, orderDate, err := handler.CreateOrder(customerId)
+				if err != nil {
+					log.Fatal("Failed to retrieve data from database: ", err)
+				}
+
+				// # Sub Menu Order Product
+				submenu2.CartOrder(orderId, orderDate, selectedCustomers)
+
+			} else {
+				// # Customers not found
+				fmt.Println("")
+				fmt.Println("Customer not found (0 to exit)")
+				var exitInput string
+				_, err = fmt.Scan(&exitInput)
+				if err != nil {
+					log.Fatal("Failed to read customerId")
+				}
+
+				if exitInput == "0" {
+					break
+				}
+			}
 		}
 	}
 }
