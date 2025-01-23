@@ -60,7 +60,7 @@ func GetListCart(OrderID int) ([]entity.Cart, error) {
 			p.ProductName AS ProductName,
 			od.Quantity AS Quantity,
 			p.Price AS Price,
-			od.Quantity * p.Price AS Total
+			od.Price AS Total
 		FROM Orders o
 		LEFT JOIN OrderDetails od ON o.OrderID = od.OrderID 
 		LEFT JOIN Products p ON od.ProductID = p.ProductID

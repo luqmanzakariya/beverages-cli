@@ -16,6 +16,7 @@ func CartOrder(OrderID int, orderDate string, customer entity.Users) {
 		fmt.Print("\033[H\033[2J")
 		fmt.Println("=======================================")
 		fmt.Println("Welcome", customer.Name)
+		fmt.Println("Order ID:", OrderID)
 		fmt.Println("Date:", orderDate)
 		fmt.Println("==============List Cart================")
 
@@ -62,7 +63,7 @@ func CartOrder(OrderID int, orderDate string, customer entity.Users) {
 		// # Submenu View
 		switch userInput {
 		case "1":
-
+			AddItemsToCart(OrderID, orderDate, customer)
 		case "2":
 
 		case "3":
