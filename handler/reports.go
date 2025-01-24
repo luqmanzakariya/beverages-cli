@@ -45,3 +45,82 @@ func GetListOrder() ([]entity.OrderReports, error) {
 
 	return orders, nil
 }
+
+func TopSalesPerCategory() ([]entity.TopSalesPerCategory, error) {
+	db, err := config.InitDB()
+	if err != nil {
+		log.Fatal("Failed to connect db", err.Error())
+	}
+	defer db.Close()
+
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+
+	rows, err := db.QueryContext(ctx, `
+		SELECT 
+				ps.CategoryName,
+				ps.ProductName,
+				ps.TotalSales
+		FROM 
+				(
+						SELECT 
+								p.ProductID,
+								p.ProductName,
+								c.CategoryID,
+								c.CategoryName,
+								SUM(od.Quantity * od.Price) AS TotalSales
+						FROM 
+								OrderDetails od
+						JOIN 
+								Products p ON od.ProductID = p.ProductID
+						JOIN 
+								Categories c ON p.CategoryID = c.CategoryID
+						GROUP BY 
+								p.ProductID, p.ProductName, c.CategoryID, c.CategoryName
+				) AS ps
+		JOIN 
+				(
+						SELECT 
+								CategoryID,
+								MAX(TotalSales) AS MaxSales
+						FROM 
+								(
+										SELECT 
+												p.ProductID,
+												c.CategoryID,
+												SUM(od.Quantity * od.Price) AS TotalSales
+										FROM 
+												OrderDetails od
+										JOIN 
+												Products p ON od.ProductID = p.ProductID
+										JOIN 
+												Categories c ON p.CategoryID = c.CategoryID
+										GROUP BY 
+												p.ProductID, c.CategoryID
+								) AS SubSales
+						GROUP BY 
+								CategoryID
+				) AS TopSalesPerCategory
+		ON 
+				ps.CategoryID = TopSalesPerCategory.CategoryID
+				AND ps.TotalSales = TopSalesPerCategory.MaxSales
+		ORDER BY 
+				ps.CategoryName;
+	`)
+
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var orders []entity.TopSalesPerCategory
+	for rows.Next() {
+		var t entity.TopSalesPerCategory
+		if err = rows.Scan(&t.CategoryName, &t.ProductName, &t.TopSales); err != nil {
+			return nil, err
+		}
+		orders = append(orders, t)
+	}
+
+	return orders, nil
+}

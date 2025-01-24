@@ -7,3 +7,9 @@ type OrderReports struct {
 	TotalAmount float64
 	Status      string
 }
+
+type TopSalesPerCategory struct {
+	CategoryName string
+	ProductName  string
+	TopSales     float64
+}

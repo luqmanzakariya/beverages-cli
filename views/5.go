@@ -38,6 +38,7 @@ func View5() {
 		case "3":
 			submenu5.ListOrders()
 		case "4":
+			submenu5.TopSalesPerCategory()
 		case "5":
 		case "6":
 		default:
