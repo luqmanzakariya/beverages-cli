@@ -15,7 +15,7 @@ func View5() {
 		fmt.Println("=======================================")
 		fmt.Println("")
 		fmt.Println("1. List Registered Customer")
-		fmt.Println("2. List Beverages and Stocks")
+		fmt.Println("2. List Product and Stocks")
 		fmt.Println("3. List Order")
 		fmt.Println("4. Top Sales Per Category")
 		fmt.Println("5. Top Spender Customer")
