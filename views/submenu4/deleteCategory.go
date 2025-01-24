@@ -11,7 +11,7 @@ import (
 func DeleteCategory(listCategory []entity.Categories) {
 	for {
 		fmt.Println("")
-		fmt.Print("Select id category you want to delete: ")
+		fmt.Print("Please select category you want to delete: ")
 		var deletedId string
 		_, err := fmt.Scan(&deletedId)
 		if err != nil {

@@ -16,7 +16,7 @@ func EditCategory(listCategory []entity.Users) {
 	for {
 		// # Store Input
 		fmt.Println("")
-		fmt.Print("Select Category ID you want to edit: ")
+		fmt.Print("Please select category you want to delete")
 		var CategoryId string
 		_, err := fmt.Scan(&CategoryId)
 		if err != nil {

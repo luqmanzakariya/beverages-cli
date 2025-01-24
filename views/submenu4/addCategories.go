@@ -1,7 +1,7 @@
 package submenu4
 
 import (
-	handler "beverages-cli/handler"
+	"beverages-cli/handler"
 	"bufio"
 	"fmt"
 	"log"
@@ -14,7 +14,7 @@ func CreateCategory() {
 	// # UI and Store Input
 	fmt.Print("\033[H\033[2J")
 	fmt.Println("=======================================")
-	fmt.Println("Add New Category")
+	fmt.Println("Please input category name")
 	fmt.Println("=======================================")
 	fmt.Println("")
 

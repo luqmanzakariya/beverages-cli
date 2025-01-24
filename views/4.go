@@ -1,13 +1,13 @@
 package views
 
 import (
-	submenu4 "beverages-cli/views/submenu4"
+	// submenu4 "beverages-cli/views/submenu4"
 	"fmt"
 	"log"
 )
 
 func View4() {
-	submenu4.addCategories()
+	// submenu4.addCategories()
 	for {
 		// # User interface
 		fmt.Print("\033[H\033[2J")
