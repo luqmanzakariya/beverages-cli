@@ -18,3 +18,7 @@ func InitialMenu() {
 	fmt.Println("")
 	fmt.Print("Answer: ")
 }
+
+func ReturnString(str string) string {
+	return str
+}
