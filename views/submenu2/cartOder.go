@@ -115,6 +115,23 @@ func CartOrder(OrderID int, orderDate string, customer entity.Users) {
 			}
 
 		case "3":
+			successPaid, err := handler.PaidOrder(OrderID, grandTotal)
+			if err != nil {
+				log.Fatal("Failed delete customer by ID")
+			}
+
+			if successPaid {
+				fmt.Println("")
+				fmt.Println("Order with id: ", OrderID, " has been paid")
+			} else {
+				fmt.Println("Error paid order")
+			}
+
+			var userInputToContinue string
+			_, err = fmt.Scan(&userInputToContinue)
+			if err != nil {
+				log.Fatal("Failed to read userInput")
+			}
 
 		case "4":
 		default:
