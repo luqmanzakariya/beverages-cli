@@ -19,6 +19,7 @@ func View2() {
 		fmt.Println("=======================================")
 		fmt.Println("Order")
 		fmt.Println("=======================================")
+		fmt.Println("")
 
 		// # Fetch data customers
 		customers, err := handler.GetAllCustomers()
