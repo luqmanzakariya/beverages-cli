@@ -36,6 +36,7 @@ func View5() {
 		case "2":
 			submenu5.ListProductAndStock()
 		case "3":
+			submenu5.ListOrders()
 		case "4":
 		case "5":
 		case "6":
