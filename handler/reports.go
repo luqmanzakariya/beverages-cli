@@ -124,3 +124,48 @@ func TopSalesPerCategory() ([]entity.TopSalesPerCategory, error) {
 
 	return orders, nil
 }
+
+func TopSpenderCustomer() ([]entity.TopSpenderCustomer, error) {
+	db, err := config.InitDB()
+	if err != nil {
+		log.Fatal("Failed to connect db", err.Error())
+	}
+	defer db.Close()
+
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+
+	rows, err := db.QueryContext(ctx, `
+		SELECT 
+				u.Name AS CustomerName,
+				u.Email AS CustomerEmail,
+				u.PhoneNumber AS CustomerPhone,
+				SUM(o.TotalAmount) AS TotalSpent
+		FROM 
+				Orders o
+		JOIN 
+				Users u ON o.UserID = u.UserID
+		WHERE 
+				u.RoleID = (SELECT RoleID FROM Roles WHERE RoleName = 'Customer')
+		GROUP BY 
+				u.UserID, u.Name, u.Email
+		ORDER BY 
+				TotalSpent DESC;
+	`)
+
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var orders []entity.TopSpenderCustomer
+	for rows.Next() {
+		var t entity.TopSpenderCustomer
+		if err = rows.Scan(&t.CustomerName, &t.CustomerEmail, &t.CustomerPhone, &t.TotalSpent); err != nil {
+			return nil, err
+		}
+		orders = append(orders, t)
+	}
+
+	return orders, nil
+}

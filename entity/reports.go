@@ -13,3 +13,10 @@ type TopSalesPerCategory struct {
 	ProductName  string
 	TopSales     float64
 }
+
+type TopSpenderCustomer struct {
+	CustomerName  string
+	CustomerEmail string
+	CustomerPhone string
+	TotalSpent    float64
+}

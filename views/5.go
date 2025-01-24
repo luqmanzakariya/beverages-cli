@@ -40,6 +40,7 @@ func View5() {
 		case "4":
 			submenu5.TopSalesPerCategory()
 		case "5":
+			submenu5.TopSpenderCustomer()
 		case "6":
 		default:
 			continue
