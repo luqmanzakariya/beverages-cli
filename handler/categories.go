@@ -21,7 +21,7 @@ func GetLisCategory() ([]entity.Categories, error) {
 	rows, err := db.QueryContext(ctx, `
 		SELECT
 			CategoryID,
-			CategoryName,
+			CategoryName
 		FROM Categories c
 	`)
 
@@ -80,8 +80,8 @@ func DeleteCategoryById(CategoryID string) (bool, error) {
 
 	// # Query with parameters
 	query := `
-		DELETE FROM categories 
-		WHERE UserID = ?;
+		DELETE FROM Categories 
+		WHERE CategoryID = ?;
 	`
 
 	rows, err := db.QueryContext(ctx, query, CategoryID)
